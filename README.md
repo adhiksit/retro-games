@@ -24,6 +24,8 @@ The API provides:
 Game search functionality
 Game details (ratings, platforms, release dates, etc.)
 Images and metadata for thousands of games
+
+
 ✨ Features
 🔍 Game Search (with Debounce)
 Real-time search for games
@@ -35,6 +37,8 @@ PlayStation
 Xbox
 Nintendo
 Makes it easier to narrow down results
+
+
 ⭐ Favorites / Wishlist
 Add games to a wishlist
 Stored in browser using localStorage
@@ -47,11 +51,15 @@ Ratings
 Release dates
 Platforms
 Genres
+
+
 🧱 UI Design
 Grid layout for displaying games
 Large game cover images (box art)
 Star-based rating system
 Sidebar for favorites
+
+
 🛠️ Technologies Used
 HTML5
 CSS3
