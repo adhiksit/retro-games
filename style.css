@@ -1,0 +1,140 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background: #111;
+  color: white;
+}
+
+header {
+  padding: 15px;
+  display: flex;
+  gap: 60px;
+  gap: 10px;
+  background: #222;
+}
+
+input, select {
+  height: 30px;
+}
+
+main {
+  display: flex;
+}
+
+#games {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 15px;
+  padding: 15px;
+  flex: 3;
+}
+
+.card {
+  background: #1e1e1e;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.card img {
+  width: 100%;
+  border-radius: 8px;
+}
+
+button {
+  margin-top: 5px;
+  width: 100%;
+  padding: 5px;
+  cursor: pointer;
+  border-radius: 90px;
+}
+
+aside {
+  width: 250px;
+  background: #181818;
+  padding: 10px;
+}
+
+.fav-item {
+  background: #2a2a2a !important;
+  border: 1px solid #444 !important;
+}
+
+.fav-title {
+  color: #ffffff !important;
+  font-size: 14px !important;
+}
+
+.fav-meta {
+  color: #aaaaaa !important;
+}
+
+.btn-remove {
+  color: #888 !important;
+}
+
+.btn-remove:hover {
+  color: #ff4444 !important;
+  background: #3a0000 !important;
+}
+
+.panel-header {
+  color: #ffffff !important;
+}
+
+.btn-clear {
+  background: #333 !important;
+  border: 1px solid #666 !important;
+  color: #ccc !important;
+}
+
+.btn-clear:hover {
+  background: #500 !important;
+  border-color: #f00 !important;
+  color: #ff6666 !important;
+}
+
+/* ── Compare table fix ── */
+.compare-col-header {
+  background: #2a2a2a !important;
+  border: 1px solid #444 !important;
+  color: #fff !important;
+}
+
+.compare-col-header strong {
+  color: #fff !important;
+}
+
+.compare-row-label {
+  color: #cccccc !important;
+}
+
+.compare-cell {
+  background: #2a2a2a !important;
+  color: #eee !important;
+  border: 1px solid #444 !important;
+}
+
+.compare-cell.match {
+  background: #0d3d0d !important;
+  color: #66ff66 !important;
+  border-color: #1a6b1a !important;
+}
+
+.compare-cell.diff {
+  background: #3d2d00 !important;
+  color: #ffcc44 !important;
+  border-color: #7a5a00 !important;
+}
+
+.empty-msg {
+  color: #aaa !important;
+}
+
+.hint {
+  color: #a088ff !important;
+}
+
+.badge {
+  background: #7c5cfc !important;
+  color: #fff !important;
+}
