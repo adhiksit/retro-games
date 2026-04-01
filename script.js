@@ -266,7 +266,6 @@ window.addEventListener("DOMContentLoaded", () => {
         #toast.warn { border-left-color: #f5a623; }
         #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-        /* Panel styles */
         .panel-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; font-weight:600; }
         .badge { background:#7c5cfc; color:#fff; border-radius:999px; padding:1px 8px; font-size:12px; margin-left:6px; }
         .btn-clear { background:none; border:1px solid #ccc; border-radius:6px; padding:2px 10px; cursor:pointer; font-size:12px; }
@@ -274,7 +273,6 @@ window.addEventListener("DOMContentLoaded", () => {
         .empty-msg { color:#888; font-size:14px; font-style:italic; }
         .hint { color:#7c5cfc; }
 
-        /* Favorites */
         .fav-list { display:flex; flex-direction:column; gap:8px; }
         .fav-item { display:flex; align-items:center; gap:10px; background:#f9f9f9; border-radius:8px; padding:6px 8px; }
         .fav-item img { width:48px; height:32px; object-fit:cover; border-radius:4px; flex-shrink:0; }
@@ -284,7 +282,6 @@ window.addEventListener("DOMContentLoaded", () => {
         .btn-remove { background:none; border:none; cursor:pointer; color:#aaa; font-size:14px; padding:2px 6px; border-radius:4px; flex-shrink:0; }
         .btn-remove:hover { color:#e00; background:#fee; }
 
-        /* Compare table */
         .compare-table { font-size:13px; }
         .compare-col-headers { display:grid; grid-template-columns: repeat(2, 1fr); gap:8px; margin-bottom:12px; }
         .compare-col-header { background:#f3f0ff; border-radius:8px; padding:8px; text-align:center; position:relative; }
@@ -297,7 +294,6 @@ window.addEventListener("DOMContentLoaded", () => {
         .compare-cell.match { background:#eaffea; color:#1a7a1a; }
         .compare-cell.diff { background:#fff8e8; color:#7a5a00; }
 
-        /* Card button states */
         .btn-fav.active { background:#fffbe6; color:#c8a000; border-color:#f5d000; }
         .btn-cmp.active { background:#f0eeff; color:#5c3fcc; border-color:#b09dff; }
       `;
