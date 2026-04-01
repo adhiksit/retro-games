@@ -21,8 +21,8 @@ This project is designed to:
 
 ### 🌐 API Used
 
-**RAWG Video Games Database API**
-👉 [https://rawg.io/apidocs](https://rawg.io/apidocs)
+**FREETOGAME Database API**
+👉 [https://www.freetogame.com/api/games](https://www.freetogame.com/api/games)
 
 The API provides:
 
@@ -45,9 +45,6 @@ The API provides:
 Filter games by platform:
 
 * PC
-* PlayStation
-* Xbox
-* Nintendo
 
 Makes it easier to narrow down results.
 
@@ -85,7 +82,7 @@ Compare:
 * HTML5
 * CSS3
 * JavaScript (Vanilla or React)
-* RAWG API
+* FREETOGAME API
 * LocalStorage (for wishlist feature)
 
 ---
