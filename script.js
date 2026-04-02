@@ -47,7 +47,7 @@ window.addEventListener("DOMContentLoaded", () => {
   function displayGames(games) {
     gamesContainer.innerHTML = "";
     if (games.length === 0) {
-      gamesContainer.innerHTML = "<p>No games found 😢</p>";
+      gamesContainer.innerHTML = "<p>No games found</p>";
       return;
     }
     games.forEach((game) => {
