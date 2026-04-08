@@ -302,7 +302,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
     toast.textContent = msg;
     toast.className = type === "warn" ? "warn" : "";
-    void toast.offsetWidth; // reflow
+    void toast.offsetWidth;
     toast.classList.add("show");
     clearTimeout(toast._timer);
     toast._timer = setTimeout(() => toast.classList.remove("show"), 2500);
@@ -318,4 +318,17 @@ window.addEventListener("DOMContentLoaded", () => {
   fetchGames();
   renderFavorites();
   renderCompare();
+
+  const themeToggle = document.getElementById("theme-toggle");
+  const savedTheme = localStorage.getItem("theme") || "dark";
+  document.documentElement.setAttribute("data-theme", savedTheme);
+  themeToggle.textContent = savedTheme === "light" ? "🌙" : "🌓";
+
+  themeToggle.addEventListener("click", () => {
+    const current = document.documentElement.getAttribute("data-theme");
+    const next = current === "light" ? "dark" : "light";
+    document.documentElement.setAttribute("data-theme", next);
+    localStorage.setItem("theme", next);
+    themeToggle.textContent = next === "light" ? "🌙" : "🌓";
+  });
 });

@@ -1,20 +1,117 @@
+:root {
+  --bg: #111111;
+  --text: #ffffff;
+  --header-bg: #222222;
+  --card-bg: #1e1e1e;
+  --aside-bg: #181818;
+  --fav-item-bg: #2a2a2a;
+  --fav-item-border: #444444;
+  --fav-title: #ffffff;
+  --fav-meta: #aaaaaa;
+  --btn-remove: #888888;
+  --btn-remove-hover: #ff4444;
+  --btn-remove-hover-bg: #3a0000;
+  --panel-header: #ffffff;
+  --btn-clear-bg: #333333;
+  --btn-clear-border: #666666;
+  --btn-clear-color: #cccccc;
+  --btn-clear-hover-bg: #550000;
+  --btn-clear-hover-border: #ff0000;
+  --btn-clear-hover-color: #ff6666;
+  --compare-col-bg: #2a2a2a;
+  --compare-col-border: #444444;
+  --compare-col-color: #ffffff;
+  --compare-label: #cccccc;
+  --compare-cell-bg: #2a2a2a;
+  --compare-cell-color: #eeeeee;
+  --compare-cell-border: #444444;
+  --match-bg: #0d3d0d;
+  --match-color: #66ff66;
+  --match-border: #1a6b1a;
+  --diff-bg: #3d2d00;
+  --diff-color: #ffcc44;
+  --diff-border: #7a5a00;
+  --empty-msg: #aaaaaa;
+  --hint: #a088ff;
+  --badge-bg: #7c5cfc;
+  --badge-color: #ffffff;
+  --input-bg: #2a2a2a;
+  --input-color: #ffffff;
+  --input-border: #444444;
+  --card-meta: #aaaaaa;
+  --card-title: #ffffff;
+}
+
+[data-theme="light"] {
+  --bg: #ffffff;
+  --text: #111111;
+  --header-bg: #f2f2f2;
+  --card-bg: #ffffff;
+  --aside-bg: #f7f7f7;
+  --fav-item-bg: #f9f9f9;
+  --fav-item-border: #dddddd;
+  --fav-title: #111111;
+  --fav-meta: #666666;
+  --btn-remove: #999999;
+  --btn-remove-hover: #cc0000;
+  --btn-remove-hover-bg: #ffeeee;
+  --panel-header: #111111;
+  --btn-clear-bg: #eeeeee;
+  --btn-clear-border: #cccccc;
+  --btn-clear-color: #444444;
+  --btn-clear-hover-bg: #ffeeee;
+  --btn-clear-hover-border: #dd0000;
+  --btn-clear-hover-color: #cc0000;
+  --compare-col-bg: #f3f0ff;
+  --compare-col-border: #c9b8ff;
+  --compare-col-color: #111111;
+  --compare-label: #555555;
+  --compare-cell-bg: #f9f9f9;
+  --compare-cell-color: #111111;
+  --compare-cell-border: #dddddd;
+  --match-bg: #eaffea;
+  --match-color: #1a7a1a;
+  --match-border: #a3d9a3;
+  --diff-bg: #fff8e8;
+  --diff-color: #7a5a00;
+  --diff-border: #f5d88a;
+  --empty-msg: #888888;
+  --hint: #6c3fcc;
+  --badge-bg: #7c5cfc;
+  --badge-color: #ffffff;
+  --input-bg: #ffffff;
+  --input-color: #111111;
+  --input-border: #cccccc;
+  --card-meta: #666666;
+  --card-title: #111111;
+}
+
+*, *::before, *::after {
+  transition: background-color 0.35s ease, color 0.35s ease, border-color 0.35s ease;
+}
+
 body {
   font-family: Arial, sans-serif;
   margin: 0;
-  background: #111;
-  color: white;
+  background: var(--bg);
+  color: var(--text);
 }
 
 header {
   padding: 15px;
   display: flex;
-  gap: 60px;
   gap: 10px;
-  background: #222;
+  background: var(--header-bg);
+  border-bottom: 1px solid var(--input-border);
 }
 
 input, select {
   height: 30px;
+  background: var(--input-bg);
+  color: var(--input-color);
+  border: 1px solid var(--input-border);
+  border-radius: 6px;
+  padding: 0 8px;
 }
 
 main {
@@ -30,9 +127,20 @@ main {
 }
 
 .card {
-  background: #1e1e1e;
+  background: var(--card-bg);
   padding: 10px;
   border-radius: 10px;
+  border: 1px solid var(--input-border);
+}
+
+.card h3 {
+  color: var(--card-title);
+  margin: 8px 0 4px;
+}
+
+.card-meta {
+  color: var(--card-meta);
+  font-size: 13px;
 }
 
 .card img {
@@ -46,94 +154,98 @@ button {
   padding: 5px;
   cursor: pointer;
   border-radius: 90px;
+  background: var(--btn-clear-bg);
+  color: var(--btn-clear-color);
+  border: 1px solid var(--input-border);
 }
 
 aside {
   width: 250px;
-  background: #181818;
+  background: var(--aside-bg);
   padding: 10px;
+  border-left: 1px solid var(--input-border);
 }
 
 .fav-item {
-  background: #2a2a2a !important;
-  border: 1px solid #444 !important;
+  background: var(--fav-item-bg) !important;
+  border: 1px solid var(--fav-item-border) !important;
 }
 
 .fav-title {
-  color: #ffffff !important;
+  color: var(--fav-title) !important;
   font-size: 14px !important;
 }
 
 .fav-meta {
-  color: #aaaaaa !important;
+  color: var(--fav-meta) !important;
 }
 
 .btn-remove {
-  color: #888 !important;
+  color: var(--btn-remove) !important;
 }
 
 .btn-remove:hover {
-  color: #ff4444 !important;
-  background: #3a0000 !important;
+  color: var(--btn-remove-hover) !important;
+  background: var(--btn-remove-hover-bg) !important;
 }
 
 .panel-header {
-  color: #ffffff !important;
+  color: var(--panel-header) !important;
 }
 
 .btn-clear {
-  background: #333 !important;
-  border: 1px solid #666 !important;
-  color: #ccc !important;
+  background: var(--btn-clear-bg) !important;
+  border: 1px solid var(--btn-clear-border) !important;
+  color: var(--btn-clear-color) !important;
 }
 
 .btn-clear:hover {
-  background: #500 !important;
-  border-color: #f00 !important;
-  color: #ff6666 !important;
+  background: var(--btn-clear-hover-bg) !important;
+  border-color: var(--btn-clear-hover-border) !important;
+  color: var(--btn-clear-hover-color) !important;
 }
 
 .compare-col-header {
-  background: #2a2a2a !important;
-  border: 1px solid #444 !important;
-  color: #fff !important;
+  background: var(--compare-col-bg) !important;
+  border: 1px solid var(--compare-col-border) !important;
+  color: var(--compare-col-color) !important;
 }
 
 .compare-col-header strong {
-  color: #fff !important;
+  color: var(--compare-col-color) !important;
 }
 
 .compare-row-label {
-  color: #cccccc !important;
+  color: var(--compare-label) !important;
 }
 
 .compare-cell {
-  background: #2a2a2a !important;
-  color: #eee !important;
-  border: 1px solid #444 !important;
+  background: var(--compare-cell-bg) !important;
+  color: var(--compare-cell-color) !important;
+  border: 1px solid var(--compare-cell-border) !important;
 }
 
 .compare-cell.match {
-  background: #0d3d0d !important;
-  color: #66ff66 !important;
-  border-color: #1a6b1a !important;
+  background: var(--match-bg) !important;
+  color: var(--match-color) !important;
+  border-color: var(--match-border) !important;
 }
 
 .compare-cell.diff {
-  background: #3d2d00 !important;
-  color: #ffcc44 !important;
-  border-color: #7a5a00 !important;
+  background: var(--diff-bg) !important;
+  color: var(--diff-color) !important;
+  border-color: var(--diff-border) !important;
 }
 
 .empty-msg {
-  color: #aaa !important;
+  color: var(--empty-msg) !important;
 }
 
 .hint {
-  color: #a088ff !important;
+  color: var(--hint) !important;
 }
 
 .badge {
-  background: #7c5cfc !important;
-  color: #fff !important;
+  background: var(--badge-bg) !important;
+  color: var(--badge-color) !important;
 }
