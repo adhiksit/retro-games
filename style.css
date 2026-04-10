@@ -1,112 +1,8 @@
-:root {
-  --bg: #111111;
-  --text: #ffffff;
-  --header-bg: #222222;
-  --card-bg: #1e1e1e;
-  --aside-bg: #181818;
-  --fav-item-bg: #2a2a2a;
-  --fav-item-border: #444444;
-  --fav-title: #ffffff;
-  --fav-meta: #aaaaaa;
-  --btn-remove: #888888;
-  --btn-remove-hover: #ff4444;
-  --btn-remove-hover-bg: #3a0000;
-  --panel-header: #ffffff;
-  --btn-clear-bg: #333333;
-  --btn-clear-border: #666666;
-  --btn-clear-color: #cccccc;
-  --btn-clear-hover-bg: #550000;
-  --btn-clear-hover-border: #ff0000;
-  --btn-clear-hover-color: #ff6666;
-  --compare-col-bg: #2a2a2a;
-  --compare-col-border: #444444;
-  --compare-col-color: #ffffff;
-  --compare-label: #cccccc;
-  --compare-cell-bg: #2a2a2a;
-  --compare-cell-color: #eeeeee;
-  --compare-cell-border: #444444;
-  --match-bg: #0d3d0d;
-  --match-color: #66ff66;
-  --match-border: #1a6b1a;
-  --diff-bg: #3d2d00;
-  --diff-color: #ffcc44;
-  --diff-border: #7a5a00;
-  --empty-msg: #aaaaaa;
-  --hint: #aaaaaa;
-  --badge-bg: transparent;
-  --badge-color: inherit;
-  --input-bg: #2a2a2a;
-  --input-color: #ffffff;
-  --input-border: #444444;
-  --card-meta: #aaaaaa;
-  --card-title: #ffffff;
-  --btn-fav-active-bg: #fffbe6;
-  --btn-fav-active-color: #c8a000;
-  --btn-fav-active-border: #f5d000;
-  --btn-cmp-active-bg: #444444;
-  --btn-cmp-active-color: #ffffff;
-  --btn-cmp-active-border: #666666;
-}
-
-[data-theme="light"] {
-  --bg: #ffffff;
-  --text: #111111;
-  --header-bg: #f2f2f2;
-  --card-bg: #ffffff;
-  --aside-bg: #f7f7f7;
-  --fav-item-bg: #f9f9f9;
-  --fav-item-border: #dddddd;
-  --fav-title: #111111;
-  --fav-meta: #666666;
-  --btn-remove: #999999;
-  --btn-remove-hover: #cc0000;
-  --btn-remove-hover-bg: #ffeeee;
-  --panel-header: #111111;
-  --btn-clear-bg: #eeeeee;
-  --btn-clear-border: #cccccc;
-  --btn-clear-color: #444444;
-  --btn-clear-hover-bg: #ffeeee;
-  --btn-clear-hover-border: #dd0000;
-  --btn-clear-hover-color: #cc0000;
-  --compare-col-bg: transparent;
-  --compare-col-border: var(--input-border);
-  --compare-col-color: var(--text);
-  --compare-label: #555555;
-  --compare-cell-bg: #f9f9f9;
-  --compare-cell-color: #111111;
-  --compare-cell-border: #dddddd;
-  --match-bg: #eaffea;
-  --match-color: #1a7a1a;
-  --match-border: #a3d9a3;
-  --diff-bg: #fff8e8;
-  --diff-color: #7a5a00;
-  --diff-border: #f5d88a;
-  --empty-msg: #888888;
-  --hint: #888888;
-  --badge-bg: transparent;
-  --badge-color: inherit;
-  --input-bg: #ffffff;
-  --input-color: #111111;
-  --input-border: #cccccc;
-  --card-meta: #666666;
-  --card-title: #111111;
-  --btn-fav-active-bg: #fffbe6;
-  --btn-fav-active-color: #c8a000;
-  --btn-fav-active-border: #f5d000;
-  --btn-cmp-active-bg: #2a2a2a;
-  --btn-cmp-active-color: #ffffff;
-  --btn-cmp-active-border: #111111;
-}
-
-*, *::before, *::after {
-  transition: background-color 0.35s ease, color 0.35s ease, border-color 0.35s ease;
-}
-
 body {
   font-family: Arial, sans-serif;
   margin: 0;
-  background: var(--bg);
-  color: var(--text);
+  background: #111111;
+  color: #ffffff;
 }
 
 header {
@@ -114,8 +10,8 @@ header {
   display: flex;
   align-items: center;
   gap: 15px;
-  background: var(--header-bg);
-  border-bottom: 1px solid var(--input-border);
+  background: #222222;
+  border-bottom: 1px solid #444444;
 }
 
 header h1 {
@@ -124,36 +20,15 @@ header h1 {
   font-size: 1.8rem;
 }
 
-input, select {
+input,
+select {
   height: 38px;
-  background: var(--input-bg);
-  color: var(--input-color);
-  border: 1px solid var(--input-border);
+  background: #2a2a2a;
+  color: #ffffff;
+  border: 1px solid #444444;
   border-radius: 8px;
   padding: 0 12px;
   font-size: 1rem;
-}
-
-#theme-toggle {
-  margin-top: 0;
-  width: 40px;
-  height: 40px;
-  padding: 0;
-  border-radius: 50%;
-  background: var(--input-bg);
-  border: 1px solid var(--input-border);
-  color: inherit;
-  font-size: 1.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-}
-
-#theme-toggle:hover {
-  background: var(--card-bg);
-  transform: scale(1.05);
 }
 
 main {
@@ -169,19 +44,19 @@ main {
 }
 
 .card {
-  background: var(--card-bg);
+  background: #1e1e1e;
   padding: 10px;
   border-radius: 10px;
-  border: 1px solid var(--input-border);
+  border: 1px solid #444444;
 }
 
 .card h3 {
-  color: var(--card-title);
+  color: #ffffff;
   margin: 8px 0 4px;
 }
 
 .card-meta {
-  color: var(--card-meta);
+  color: #aaaaaa;
   font-size: 13px;
 }
 
@@ -196,110 +71,110 @@ button {
   padding: 5px;
   cursor: pointer;
   border-radius: 90px;
-  background: var(--btn-clear-bg);
-  color: var(--btn-clear-color);
-  border: 1px solid var(--input-border);
+  background: #333333;
+  color: #cccccc;
+  border: 1px solid #444444;
 }
 
 aside {
   width: 250px;
-  background: var(--aside-bg);
+  background: #181818;
   padding: 10px;
-  border-left: 1px solid var(--input-border);
+  border-left: 1px solid #444444;
 }
 
 .fav-item {
-  background: var(--fav-item-bg) !important;
-  border: 1px solid var(--fav-item-border) !important;
+  background: #2a2a2a !important;
+  border: 1px solid #444444 !important;
 }
 
 .fav-title {
-  color: var(--fav-title) !important;
+  color: #ffffff !important;
   font-size: 14px !important;
 }
 
 .fav-meta {
-  color: var(--fav-meta) !important;
+  color: #aaaaaa !important;
 }
 
 .btn-remove {
-  color: var(--btn-remove) !important;
+  color: #888888 !important;
 }
 
 .btn-remove:hover {
-  color: var(--btn-remove-hover) !important;
-  background: var(--btn-remove-hover-bg) !important;
+  color: #ff4444 !important;
+  background: #3a0000 !important;
 }
 
 .panel-header {
-  color: var(--panel-header) !important;
+  color: #ffffff !important;
 }
 
 .btn-clear {
-  background: var(--btn-clear-bg) !important;
-  border: 1px solid var(--btn-clear-border) !important;
-  color: var(--btn-clear-color) !important;
+  background: #333333 !important;
+  border: 1px solid #666666 !important;
+  color: #cccccc !important;
 }
 
 .btn-clear:hover {
-  background: var(--btn-clear-hover-bg) !important;
-  border-color: var(--btn-clear-hover-border) !important;
-  color: var(--btn-clear-hover-color) !important;
+  background: #550000 !important;
+  border-color: #ff0000 !important;
+  color: #ff6666 !important;
 }
 
 .compare-col-header {
-  background: var(--compare-col-bg) !important;
-  border: 1px solid var(--compare-col-border) !important;
-  color: var(--compare-col-color) !important;
+  background: #2a2a2a !important;
+  border: 1px solid #444444 !important;
+  color: #ffffff !important;
 }
 
 .compare-col-header strong {
-  color: var(--compare-col-color) !important;
+  color: #ffffff !important;
 }
 
 .compare-row-label {
-  color: var(--compare-label) !important;
+  color: #cccccc !important;
 }
 
 .compare-cell {
-  background: var(--compare-cell-bg) !important;
-  color: var(--compare-cell-color) !important;
-  border: 1px solid var(--compare-cell-border) !important;
+  background: #2a2a2a !important;
+  color: #eeeeee !important;
+  border: 1px solid #444444 !important;
 }
 
 .compare-cell.match {
-  background: var(--match-bg) !important;
-  color: var(--match-color) !important;
-  border-color: var(--match-border) !important;
+  background: #0d3d0d !important;
+  color: #66ff66 !important;
+  border-color: #1a6b1a !important;
 }
 
 .compare-cell.diff {
-  background: var(--diff-bg) !important;
-  color: var(--diff-color) !important;
-  border-color: var(--diff-border) !important;
+  background: #3d2d00 !important;
+  color: #ffcc44 !important;
+  border-color: #7a5a00 !important;
 }
 
 .empty-msg {
-  color: var(--empty-msg) !important;
+  color: #aaaaaa !important;
 }
 
 .hint {
-  color: var(--hint) !important;
+  color: #aaaaaa !important;
 }
 
 .badge {
-  background: var(--badge-bg) !important;
-  color: var(--badge-color) !important;
+  background: transparent !important;
+  color: inherit !important;
 }
 
 .btn-fav.active {
-  background: var(--btn-fav-active-bg) !important;
-  color: var(--btn-fav-active-color) !important;
-  border-color: var(--btn-fav-active-border) !important;
+  background: #fffbe6 !important;
+  color: #c8a000 !important;
+  border-color: #f5d000 !important;
 }
 
 .btn-cmp.active {
-  background: var(--btn-cmp-active-bg) !important;
-  color: var(--btn-cmp-active-color) !important;
-  border-color: var(--btn-cmp-active-border) !important;
+  background: #444444 !important;
+  color: #ffffff !important;
+  border-color: #666666 !important;
 }

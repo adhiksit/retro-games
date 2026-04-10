@@ -1,332 +1,404 @@
-const PROXY = "https://cors-anywhere.herokuapp.com/";
-const API = "https://www.freetogame.com/api/games";
+var PROXY = "https://cors-anywhere.herokuapp.com/";
+var API = "https://www.freetogame.com/api/games";
 
-let gamesData = [];
-let favorites = [];
-let compareList = [];
+var gamesData = [];
+var favorites = [];
+var compareList = [];
 
-window.addEventListener("DOMContentLoaded", () => {
+var gamesContainer;
+var favoritesContainer;
+var compareContainer;
+var searchInput;
+var platformSelect;
+
+window.onload = function () {
+  gamesContainer = document.getElementById("games");
+  favoritesContainer = document.getElementById("favorites");
+  compareContainer = document.getElementById("compare");
+  searchInput = document.getElementById("search");
+  platformSelect = document.getElementById("platform");
+
+  searchInput.onkeyup = function () {
+    showFilteredGames();
+  };
+
+  platformSelect.onchange = function () {
+    showFilteredGames();
+  };
+
+  loadGames();
+  showFavorites();
+  showCompare();
+};
+
+async function loadGames() {
+  gamesContainer.innerHTML = "<p>Loading games...</p>";
+
   try {
-    favorites = JSON.parse(localStorage.getItem("favorites")) || [];
-  } catch {
-    favorites = [];
-  }
+    var response = await fetch(PROXY + API, {
+      headers: { "X-Requested-With": "XMLHttpRequest" },
+    });
 
-  const gamesContainer = document.getElementById("games");
-  const favoritesContainer = document.getElementById("favorites");
-  const compareContainer = document.getElementById("compare");
-  const searchInput = document.getElementById("search");
-  const platformSelect = document.getElementById("platform");
-
-  async function fetchGames() {
-    try {
-      gamesContainer.innerHTML = "<p class='loading'>Loading games…</p>";
-      const res = await fetch(PROXY + API, {
-        headers: { "X-Requested-With": "XMLHttpRequest" },
-      });
-      if (!res.ok) throw new Error("HTTP " + res.status);
-      gamesData = await res.json();
-      displayGames(gamesData);
-    } catch (err) {
+    if (!response.ok) {
       gamesContainer.innerHTML =
-        "<p>Failed to load games. Visit <a href='https://cors-anywhere.herokuapp.com/corsdemo' target='_blank'>cors-anywhere.herokuapp.com/corsdemo</a> to enable the proxy, then refresh.</p>";
-    }
-  }
-
-  function getFiltered() {
-    const search = searchInput.value.trim().toLowerCase();
-    const platform = platformSelect.value.toLowerCase();
-    return gamesData.filter((game) => {
-      const matchSearch = !search || game.title.toLowerCase().includes(search);
-      const matchPlatform =
-        !platform || game.platform.toLowerCase().includes(platform);
-      return matchSearch && matchPlatform;
-    });
-  }
-
-  function displayGames(games) {
-    gamesContainer.innerHTML = "";
-    if (games.length === 0) {
-      gamesContainer.innerHTML = "<p>No games found</p>";
+        "<p>Something went wrong. Status: " + response.status + "</p>";
       return;
     }
-    games.forEach((game) => {
-      const isFav = favorites.some((f) => f.id === game.id);
-      const inCmp = compareList.some((c) => c.id === game.id);
 
-      const div = document.createElement("div");
-      div.className = "card";
-      div.dataset.id = game.id;
-      div.innerHTML = `
-        <img src="${game.thumbnail}" alt="${game.title}" loading="lazy" />
-        <h3>${game.title}</h3>
-        <p class="card-meta">${game.genre} · ${game.platform}</p>
-        <div class="card-actions">
-          <button class="btn-fav ${isFav ? "active" : ""}" onclick="toggleFavorite(${game.id})">
-            ${isFav ? "★ Saved" : "☆ Favorite"}
-          </button>
-          <button class="btn-cmp ${inCmp ? "active" : ""}" onclick="toggleCompare(${game.id})" ${!inCmp && compareList.length >= 2 ? "disabled title='Remove a game first'" : ""}>
-            ${inCmp ? "⚖ Added" : "⚖ Compare"}
-          </button>
-        </div>
-      `;
-      gamesContainer.appendChild(div);
-    });
+    gamesData = await response.json();
+    showAllGames(gamesData);
+  } catch (error) {
+    gamesContainer.innerHTML =
+      "<p>Failed to load games. Visit <a href='https://cors-anywhere.herokuapp.com/corsdemo' target='_blank'>cors-anywhere.herokuapp.com/corsdemo</a> to enable the proxy, then refresh.</p>";
+  }
+}
+
+function showAllGames(games) {
+  gamesContainer.innerHTML = "";
+
+  if (games.length === 0) {
+    gamesContainer.innerHTML = "<p>No games found.</p>";
+    return;
   }
 
-  window.toggleFavorite = function (id) {
-    const index = favorites.findIndex((f) => f.id === id);
-    if (index >= 0) {
-      favorites.splice(index, 1);
-      showToast("Removed from favorites");
-    } else {
-      const game = gamesData.find((g) => g.id === id);
-      if (game) {
-        favorites.push(game);
+  for (var i = 0; i < games.length; i++) {
+    var game = games[i];
+
+    var isFav = false;
+    for (var j = 0; j < favorites.length; j++) {
+      if (favorites[j].id === game.id) {
+        isFav = true;
+        break;
+      }
+    }
+
+    var inCmp = false;
+    for (var k = 0; k < compareList.length; k++) {
+      if (compareList[k].id === game.id) {
+        inCmp = true;
+        break;
+      }
+    }
+
+    var card = document.createElement("div");
+    card.className = "card";
+
+    var img = document.createElement("img");
+    img.src = game.thumbnail;
+    img.alt = game.title;
+    img.loading = "lazy";
+
+    var title = document.createElement("h3");
+    title.innerText = game.title;
+
+    var meta = document.createElement("p");
+    meta.className = "card-meta";
+    meta.innerText = game.genre + " · " + game.platform;
+
+    var favBtn = document.createElement("button");
+    favBtn.className = "btn-fav" + (isFav ? " active" : "");
+    favBtn.innerText = isFav ? "★ Saved" : "☆ Favorite";
+    favBtn.onclick = makeFavHandler(game.id);
+
+    var cmpBtn = document.createElement("button");
+    cmpBtn.className = "btn-cmp" + (inCmp ? " active" : "");
+    cmpBtn.innerText = inCmp ? "⚖ Added" : "⚖ Compare";
+    cmpBtn.onclick = makeCmpHandler(game.id);
+    if (!inCmp && compareList.length >= 2) {
+      cmpBtn.disabled = true;
+      cmpBtn.title = "Remove a game first";
+    }
+
+    var actions = document.createElement("div");
+    actions.className = "card-actions";
+    actions.appendChild(favBtn);
+    actions.appendChild(cmpBtn);
+
+    card.appendChild(img);
+    card.appendChild(title);
+    card.appendChild(meta);
+    card.appendChild(actions);
+
+    gamesContainer.appendChild(card);
+  }
+}
+
+function makeFavHandler(id) {
+  return function () {
+    toggleFavorite(id);
+  };
+}
+
+function makeCmpHandler(id) {
+  return function () {
+    toggleCompare(id);
+  };
+}
+
+function showFilteredGames() {
+  var search = searchInput.value.toLowerCase();
+  var platform = platformSelect.value.toLowerCase();
+  var filtered = [];
+
+  for (var i = 0; i < gamesData.length; i++) {
+    var game = gamesData[i];
+    var titleMatch = game.title.toLowerCase().indexOf(search) !== -1;
+    var platformMatch =
+      platform === "" || game.platform.toLowerCase().indexOf(platform) !== -1;
+
+    if (titleMatch && platformMatch) {
+      filtered.push(game);
+    }
+  }
+
+  showAllGames(filtered);
+}
+
+function toggleFavorite(id) {
+  var foundIndex = -1;
+  for (var i = 0; i < favorites.length; i++) {
+    if (favorites[i].id === id) {
+      foundIndex = i;
+      break;
+    }
+  }
+
+  if (foundIndex >= 0) {
+    favorites.splice(foundIndex, 1);
+    showToast("Removed from favorites");
+  } else {
+    for (var j = 0; j < gamesData.length; j++) {
+      if (gamesData[j].id === id) {
+        favorites.push(gamesData[j]);
         showToast("Added to favorites ★");
+        break;
       }
     }
-    try {
-      localStorage.setItem("favorites", JSON.stringify(favorites));
-    } catch {}
-    renderFavorites();
-    displayGames(getFiltered());
-  };
-
-  function renderFavorites() {
-    favoritesContainer.innerHTML = "";
-
-    const header = document.createElement("div");
-    header.className = "panel-header";
-    header.innerHTML = `
-      <span>Favorites <span class="badge">(${favorites.length})</span></span>
-      ${favorites.length > 0 ? `<button class="btn-clear" onclick="clearFavorites()">Clear all</button>` : ""}
-    `;
-    favoritesContainer.appendChild(header);
-
-    if (favorites.length === 0) {
-      favoritesContainer.insertAdjacentHTML(
-        "beforeend",
-        "<p class='empty-msg'>No favorites yet. Click ☆ on any game.</p>",
-      );
-      return;
-    }
-
-    const list = document.createElement("div");
-    list.className = "fav-list";
-
-    favorites.forEach((game) => {
-      const div = document.createElement("div");
-      div.className = "fav-item";
-      div.innerHTML = `
-        <img src="${game.thumbnail}" alt="${game.title}" />
-        <div class="fav-info">
-          <span class="fav-title">${game.title}</span>
-          <span class="fav-meta">${game.genre} · ${game.platform}</span>
-        </div>
-        <button class="btn-remove" onclick="toggleFavorite(${game.id})" title="Remove">✕</button>
-      `;
-      list.appendChild(div);
-    });
-
-    favoritesContainer.appendChild(list);
   }
 
-  window.clearFavorites = function () {
-    if (!confirm("Clear all favorites?")) return;
-    favorites = [];
-    try {
-      localStorage.removeItem("favorites");
-    } catch {}
-    renderFavorites();
-    displayGames(getFiltered());
-    showToast("Favorites cleared");
-  };
+  showFavorites();
+  showFilteredGames();
+}
 
-  window.toggleCompare = function (id) {
-    const index = compareList.findIndex((c) => c.id === id);
-    if (index >= 0) {
-      compareList.splice(index, 1);
-      showToast("Removed from compare");
-    } else {
-      if (compareList.length >= 2) {
-        showToast("Remove a game first (max 2)", "warn");
-        return;
-      }
-      const game = gamesData.find((g) => g.id === id);
-      if (game) {
-        compareList.push(game);
+function showFavorites() {
+  favoritesContainer.innerHTML = "";
+
+  var header = document.createElement("div");
+  header.className = "panel-header";
+  header.innerText = "Favorites (" + favorites.length + ")";
+
+  if (favorites.length > 0) {
+    var clearBtn = document.createElement("button");
+    clearBtn.className = "btn-clear";
+    clearBtn.innerText = "Clear all";
+    clearBtn.onclick = clearFavorites;
+    header.appendChild(clearBtn);
+  }
+
+  favoritesContainer.appendChild(header);
+
+  if (favorites.length === 0) {
+    var msg = document.createElement("p");
+    msg.className = "empty-msg";
+    msg.innerText = "No favorites yet. Click ☆ on any game.";
+    favoritesContainer.appendChild(msg);
+    return;
+  }
+
+  for (var i = 0; i < favorites.length; i++) {
+    var game = favorites[i];
+
+    var item = document.createElement("div");
+    item.className = "fav-item";
+
+    var img = document.createElement("img");
+    img.src = game.thumbnail;
+    img.alt = game.title;
+
+    var info = document.createElement("div");
+    info.className = "fav-info";
+
+    var name = document.createElement("span");
+    name.className = "fav-title";
+    name.innerText = game.title;
+
+    var meta = document.createElement("span");
+    meta.className = "fav-meta";
+    meta.innerText = game.genre + " · " + game.platform;
+
+    var removeBtn = document.createElement("button");
+    removeBtn.className = "btn-remove";
+    removeBtn.innerText = "✕";
+    removeBtn.title = "Remove";
+    removeBtn.onclick = makeFavHandler(game.id);
+
+    info.appendChild(name);
+    info.appendChild(meta);
+    item.appendChild(img);
+    item.appendChild(info);
+    item.appendChild(removeBtn);
+    favoritesContainer.appendChild(item);
+  }
+}
+
+function clearFavorites() {
+  var sure = confirm("Clear all favorites?");
+  if (!sure) return;
+  favorites = [];
+  showFavorites();
+  showFilteredGames();
+  showToast("Favorites cleared");
+}
+
+function toggleCompare(id) {
+  var foundIndex = -1;
+  for (var i = 0; i < compareList.length; i++) {
+    if (compareList[i].id === id) {
+      foundIndex = i;
+      break;
+    }
+  }
+
+  if (foundIndex >= 0) {
+    compareList.splice(foundIndex, 1);
+    showToast("Removed from compare");
+  } else {
+    if (compareList.length >= 2) {
+      showToast("Remove a game first (max 2)");
+      return;
+    }
+    for (var j = 0; j < gamesData.length; j++) {
+      if (gamesData[j].id === id) {
+        compareList.push(gamesData[j]);
         showToast("Added to compare ⚖");
+        break;
       }
     }
-    renderCompare();
-    displayGames(getFiltered());
-  };
-
-  function renderCompare() {
-    compareContainer.innerHTML = "";
-
-    const header = document.createElement("div");
-    header.className = "panel-header";
-    header.innerHTML = `
-      <span>Compare <span class="badge">(${compareList.length}/2)</span></span>
-      ${compareList.length > 0 ? `<button class="btn-clear" onclick="clearCompare()">Clear</button>` : ""}
-    `;
-    compareContainer.appendChild(header);
-
-    if (compareList.length === 0) {
-      compareContainer.insertAdjacentHTML(
-        "beforeend",
-        "<p class='empty-msg'>Select up to 2 games to compare.</p>",
-      );
-      return;
-    }
-
-    const table = document.createElement("div");
-    table.className = "compare-table";
-
-    const colHeaders = document.createElement("div");
-    colHeaders.className = "compare-col-headers";
-    colHeaders.innerHTML = compareList
-      .map(
-        (g) => `
-      <div class="compare-col-header">
-        <img src="${g.thumbnail}" alt="${g.title}" />
-        <strong>${g.title}</strong>
-        <button class="btn-remove" onclick="toggleCompare(${g.id})" title="Remove">✕</button>
-      </div>
-    `,
-      )
-      .join("");
-    table.appendChild(colHeaders);
-
-    const fields = [
-      { label: "Genre", key: "genre" },
-      { label: "Platform", key: "platform" },
-      { label: "Publisher", key: "publisher" },
-      { label: "Developer", key: "developer" },
-      { label: "Release Date", key: "release_date" },
-    ];
-
-    fields.forEach(({ label, key }) => {
-      const row = document.createElement("div");
-      row.className = "compare-row";
-
-      const values = compareList.map((g) => g[key] || "N/A");
-      const match = compareList.length === 2 && values[0] === values[1];
-
-      row.innerHTML = `
-        <div class="compare-row-label">${label}</div>
-        ${compareList
-          .map(
-            (g) => `
-          <div class="compare-cell ${compareList.length === 2 ? (match ? "match" : "diff") : ""}">
-            ${g[key] || "N/A"}
-          </div>
-        `,
-          )
-          .join("")}
-      `;
-      table.appendChild(row);
-    });
-
-    compareContainer.appendChild(table);
-
-    if (compareList.length === 1) {
-      compareContainer.insertAdjacentHTML(
-        "beforeend",
-        "<p class='empty-msg hint'>Pick one more game to compare side-by-side.</p>",
-      );
-    }
   }
 
-  window.clearCompare = function () {
-    compareList = [];
-    renderCompare();
-    displayGames(getFiltered());
-    showToast("Compare cleared");
-  };
+  showCompare();
+  showFilteredGames();
+}
 
-  function showToast(msg, type = "info") {
-    let toast = document.getElementById("toast");
-    if (!toast) {
-      toast = document.createElement("div");
-      toast.id = "toast";
-      document.body.appendChild(toast);
+function showCompare() {
+  compareContainer.innerHTML = "";
 
-      const style = document.createElement("style");
-      style.textContent = `
-        #toast {
-          position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(40px);
-          background: #1e1e2e; color: #fff; padding: 10px 20px; border-radius: 8px;
-          font-size: 14px; opacity: 0; transition: opacity .3s, transform .3s;
-          z-index: 9999; pointer-events: none; white-space: nowrap;
-          border-left: 4px solid var(--badge-bg, #444);
-        }
-        #toast.warn { border-left-color: #f5a623; }
-        #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  var header = document.createElement("div");
+  header.className = "panel-header";
+  header.innerText = "Compare (" + compareList.length + "/2)";
 
-        .panel-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; font-weight:600; }
-        .badge { background:var(--badge-bg, transparent); color:var(--badge-color, inherit); font-size:inherit; margin-left:4px; font-weight:normal; }
-        .btn-clear { background:none; border:1px solid #ccc; border-radius:6px; padding:2px 10px; cursor:pointer; font-size:12px; }
-        .btn-clear:hover { background:#fee; border-color:#e00; color:#e00; }
-        .empty-msg { color:#888; font-size:14px; font-style:italic; }
-        .hint { color:var(--hint, #888); }
-
-        .fav-list { display:flex; flex-direction:column; gap:8px; }
-        .fav-item { display:flex; align-items:center; gap:10px; background:#f9f9f9; border-radius:8px; padding:6px 8px; }
-        .fav-item img { width:48px; height:32px; object-fit:cover; border-radius:4px; flex-shrink:0; }
-        .fav-info { flex:1; min-width:0; }
-        .fav-title { font-size:13px; font-weight:600; display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-        .fav-meta { font-size:11px; color:#888; }
-        .btn-remove { background:none; border:none; cursor:pointer; color:#aaa; font-size:14px; padding:2px 6px; border-radius:4px; flex-shrink:0; }
-        .btn-remove:hover { color:#e00; background:#fee; }
-
-        .compare-table { font-size:13px; }
-        .compare-col-headers { display:grid; grid-template-columns: repeat(2, 1fr); gap:8px; margin-bottom:12px; }
-        .compare-col-header { background:transparent; border-radius:8px; padding:8px; text-align:center; position:relative; }
-        .compare-col-header img { width:100%; height:70px; object-fit:cover; border-radius:6px; margin-bottom:6px; }
-        .compare-col-header strong { display:block; font-size:12px; }
-        .compare-col-header .btn-remove { position:absolute; top:4px; right:4px; }
-        .compare-row { display:grid; grid-template-columns: 80px repeat(2, 1fr); gap:4px; margin-bottom:4px; }
-        .compare-row-label { font-weight:600; color:#555; display:flex; align-items:center; font-size:12px; }
-        .compare-cell { background:#f9f9f9; border-radius:6px; padding:5px 8px; text-align:center; font-size:12px; }
-        .compare-cell.match { background:#eaffea; color:#1a7a1a; }
-        .compare-cell.diff { background:#fff8e8; color:#7a5a00; }
-
-      `;
-      document.head.appendChild(style);
-    }
-
-    toast.textContent = msg;
-    toast.className = type === "warn" ? "warn" : "";
-    void toast.offsetWidth;
-    toast.classList.add("show");
-    clearTimeout(toast._timer);
-    toast._timer = setTimeout(() => toast.classList.remove("show"), 2500);
+  if (compareList.length > 0) {
+    var clearBtn = document.createElement("button");
+    clearBtn.className = "btn-clear";
+    clearBtn.innerText = "Clear";
+    clearBtn.onclick = clearCompare;
+    header.appendChild(clearBtn);
   }
 
-  let searchTimer;
-  searchInput.addEventListener("input", () => {
-    clearTimeout(searchTimer);
-    searchTimer = setTimeout(() => displayGames(getFiltered()), 300);
-  });
-  platformSelect.addEventListener("change", () => displayGames(getFiltered()));
+  compareContainer.appendChild(header);
 
-  fetchGames();
-  renderFavorites();
-  renderCompare();
+  if (compareList.length === 0) {
+    var msg = document.createElement("p");
+    msg.className = "empty-msg";
+    msg.innerText = "Select up to 2 games to compare.";
+    compareContainer.appendChild(msg);
+    return;
+  }
 
-  const themeToggle = document.getElementById("theme-toggle");
-  const savedTheme = localStorage.getItem("theme") || "dark";
-  document.documentElement.setAttribute("data-theme", savedTheme);
-  themeToggle.textContent = savedTheme === "light" ? "🌙" : "🌓";
+  var table = document.createElement("div");
+  table.className = "compare-table";
 
-  themeToggle.addEventListener("click", () => {
-    const current = document.documentElement.getAttribute("data-theme");
-    const next = current === "light" ? "dark" : "light";
-    document.documentElement.setAttribute("data-theme", next);
-    localStorage.setItem("theme", next);
-    themeToggle.textContent = next === "light" ? "🌙" : "🌓";
-  });
-});
+  var colHeaders = document.createElement("div");
+  colHeaders.className = "compare-col-headers";
+
+  for (var i = 0; i < compareList.length; i++) {
+    var g = compareList[i];
+
+    var col = document.createElement("div");
+    col.className = "compare-col-header";
+
+    var img = document.createElement("img");
+    img.src = g.thumbnail;
+    img.alt = g.title;
+
+    var name = document.createElement("strong");
+    name.innerText = g.title;
+
+    var removeBtn = document.createElement("button");
+    removeBtn.className = "btn-remove";
+    removeBtn.innerText = "✕";
+    removeBtn.title = "Remove";
+    removeBtn.onclick = makeCmpHandler(g.id);
+
+    col.appendChild(img);
+    col.appendChild(name);
+    col.appendChild(removeBtn);
+    colHeaders.appendChild(col);
+  }
+
+  table.appendChild(colHeaders);
+
+  var fields = ["genre", "platform", "publisher", "developer", "release_date"];
+  var labels = ["Genre", "Platform", "Publisher", "Developer", "Release Date"];
+
+  for (var f = 0; f < fields.length; f++) {
+    var row = document.createElement("div");
+    row.className = "compare-row";
+
+    var label = document.createElement("div");
+    label.className = "compare-row-label";
+    label.innerText = labels[f];
+    row.appendChild(label);
+
+    var val1 = compareList[0][fields[f]] || "N/A";
+    var val2 =
+      compareList.length === 2 ? compareList[1][fields[f]] || "N/A" : null;
+    var isMatch = compareList.length === 2 && val1 === val2;
+
+    for (var c = 0; c < compareList.length; c++) {
+      var cell = document.createElement("div");
+      cell.className = "compare-cell";
+      if (compareList.length === 2) {
+        cell.className += isMatch ? " match" : " diff";
+      }
+      cell.innerText = compareList[c][fields[f]] || "N/A";
+      row.appendChild(cell);
+    }
+
+    table.appendChild(row);
+  }
+
+  compareContainer.appendChild(table);
+
+  if (compareList.length === 1) {
+    var hint = document.createElement("p");
+    hint.className = "empty-msg hint";
+    hint.innerText = "Pick one more game to compare side-by-side.";
+    compareContainer.appendChild(hint);
+  }
+}
+
+function clearCompare() {
+  compareList = [];
+  showCompare();
+  showFilteredGames();
+  showToast("Compare cleared");
+}
+
+function showToast(msg) {
+  var toast = document.getElementById("toast");
+
+  if (!toast) {
+    toast = document.createElement("div");
+    toast.id = "toast";
+    document.body.appendChild(toast);
+  }
+
+  toast.innerText = msg;
+  toast.classList.add("show");
+
+  clearTimeout(toast._timer);
+  toast._timer = setTimeout(function () {
+    toast.classList.remove("show");
+  }, 2500);
+}
