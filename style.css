@@ -32,14 +32,20 @@
   --diff-color: #ffcc44;
   --diff-border: #7a5a00;
   --empty-msg: #aaaaaa;
-  --hint: #a088ff;
-  --badge-bg: #7c5cfc;
-  --badge-color: #ffffff;
+  --hint: #aaaaaa;
+  --badge-bg: transparent;
+  --badge-color: inherit;
   --input-bg: #2a2a2a;
   --input-color: #ffffff;
   --input-border: #444444;
   --card-meta: #aaaaaa;
   --card-title: #ffffff;
+  --btn-fav-active-bg: #fffbe6;
+  --btn-fav-active-color: #c8a000;
+  --btn-fav-active-border: #f5d000;
+  --btn-cmp-active-bg: #444444;
+  --btn-cmp-active-color: #ffffff;
+  --btn-cmp-active-border: #666666;
 }
 
 [data-theme="light"] {
@@ -62,9 +68,9 @@
   --btn-clear-hover-bg: #ffeeee;
   --btn-clear-hover-border: #dd0000;
   --btn-clear-hover-color: #cc0000;
-  --compare-col-bg: #f3f0ff;
-  --compare-col-border: #c9b8ff;
-  --compare-col-color: #111111;
+  --compare-col-bg: transparent;
+  --compare-col-border: var(--input-border);
+  --compare-col-color: var(--text);
   --compare-label: #555555;
   --compare-cell-bg: #f9f9f9;
   --compare-cell-color: #111111;
@@ -76,14 +82,20 @@
   --diff-color: #7a5a00;
   --diff-border: #f5d88a;
   --empty-msg: #888888;
-  --hint: #6c3fcc;
-  --badge-bg: #7c5cfc;
-  --badge-color: #ffffff;
+  --hint: #888888;
+  --badge-bg: transparent;
+  --badge-color: inherit;
   --input-bg: #ffffff;
   --input-color: #111111;
   --input-border: #cccccc;
   --card-meta: #666666;
   --card-title: #111111;
+  --btn-fav-active-bg: #fffbe6;
+  --btn-fav-active-color: #c8a000;
+  --btn-fav-active-border: #f5d000;
+  --btn-cmp-active-bg: #2a2a2a;
+  --btn-cmp-active-color: #ffffff;
+  --btn-cmp-active-border: #111111;
 }
 
 *, *::before, *::after {
@@ -98,20 +110,50 @@ body {
 }
 
 header {
-  padding: 15px;
+  padding: 15px 30px;
   display: flex;
-  gap: 10px;
+  align-items: center;
+  gap: 15px;
   background: var(--header-bg);
   border-bottom: 1px solid var(--input-border);
 }
 
+header h1 {
+  margin: 0;
+  margin-right: auto;
+  font-size: 1.8rem;
+}
+
 input, select {
-  height: 30px;
+  height: 38px;
   background: var(--input-bg);
   color: var(--input-color);
   border: 1px solid var(--input-border);
-  border-radius: 6px;
-  padding: 0 8px;
+  border-radius: 8px;
+  padding: 0 12px;
+  font-size: 1rem;
+}
+
+#theme-toggle {
+  margin-top: 0;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: 50%;
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  color: inherit;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+#theme-toggle:hover {
+  background: var(--card-bg);
+  transform: scale(1.05);
 }
 
 main {
@@ -248,4 +290,16 @@ aside {
 .badge {
   background: var(--badge-bg) !important;
   color: var(--badge-color) !important;
+}
+
+.btn-fav.active {
+  background: var(--btn-fav-active-bg) !important;
+  color: var(--btn-fav-active-color) !important;
+  border-color: var(--btn-fav-active-border) !important;
+}
+
+.btn-cmp.active {
+  background: var(--btn-cmp-active-bg) !important;
+  color: var(--btn-cmp-active-color) !important;
+  border-color: var(--btn-cmp-active-border) !important;
 }

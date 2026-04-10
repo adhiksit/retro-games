@@ -99,7 +99,7 @@ window.addEventListener("DOMContentLoaded", () => {
     const header = document.createElement("div");
     header.className = "panel-header";
     header.innerHTML = `
-      <span>Favorites <span class="badge">${favorites.length}</span></span>
+      <span>Favorites <span class="badge">(${favorites.length})</span></span>
       ${favorites.length > 0 ? `<button class="btn-clear" onclick="clearFavorites()">Clear all</button>` : ""}
     `;
     favoritesContainer.appendChild(header);
@@ -169,7 +169,7 @@ window.addEventListener("DOMContentLoaded", () => {
     const header = document.createElement("div");
     header.className = "panel-header";
     header.innerHTML = `
-      <span>Compare <span class="badge">${compareList.length}/2</span></span>
+      <span>Compare <span class="badge">(${compareList.length}/2)</span></span>
       ${compareList.length > 0 ? `<button class="btn-clear" onclick="clearCompare()">Clear</button>` : ""}
     `;
     compareContainer.appendChild(header);
@@ -261,17 +261,17 @@ window.addEventListener("DOMContentLoaded", () => {
           background: #1e1e2e; color: #fff; padding: 10px 20px; border-radius: 8px;
           font-size: 14px; opacity: 0; transition: opacity .3s, transform .3s;
           z-index: 9999; pointer-events: none; white-space: nowrap;
-          border-left: 4px solid #7c5cfc;
+          border-left: 4px solid var(--badge-bg, #444);
         }
         #toast.warn { border-left-color: #f5a623; }
         #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
         .panel-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; font-weight:600; }
-        .badge { background:#7c5cfc; color:#fff; border-radius:999px; padding:1px 8px; font-size:12px; margin-left:6px; }
+        .badge { background:var(--badge-bg, transparent); color:var(--badge-color, inherit); font-size:inherit; margin-left:4px; font-weight:normal; }
         .btn-clear { background:none; border:1px solid #ccc; border-radius:6px; padding:2px 10px; cursor:pointer; font-size:12px; }
         .btn-clear:hover { background:#fee; border-color:#e00; color:#e00; }
         .empty-msg { color:#888; font-size:14px; font-style:italic; }
-        .hint { color:#7c5cfc; }
+        .hint { color:var(--hint, #888); }
 
         .fav-list { display:flex; flex-direction:column; gap:8px; }
         .fav-item { display:flex; align-items:center; gap:10px; background:#f9f9f9; border-radius:8px; padding:6px 8px; }
@@ -284,7 +284,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
         .compare-table { font-size:13px; }
         .compare-col-headers { display:grid; grid-template-columns: repeat(2, 1fr); gap:8px; margin-bottom:12px; }
-        .compare-col-header { background:#f3f0ff; border-radius:8px; padding:8px; text-align:center; position:relative; }
+        .compare-col-header { background:transparent; border-radius:8px; padding:8px; text-align:center; position:relative; }
         .compare-col-header img { width:100%; height:70px; object-fit:cover; border-radius:6px; margin-bottom:6px; }
         .compare-col-header strong { display:block; font-size:12px; }
         .compare-col-header .btn-remove { position:absolute; top:4px; right:4px; }
@@ -294,8 +294,6 @@ window.addEventListener("DOMContentLoaded", () => {
         .compare-cell.match { background:#eaffea; color:#1a7a1a; }
         .compare-cell.diff { background:#fff8e8; color:#7a5a00; }
 
-        .btn-fav.active { background:#fffbe6; color:#c8a000; border-color:#f5d000; }
-        .btn-cmp.active { background:#f0eeff; color:#5c3fcc; border-color:#b09dff; }
       `;
       document.head.appendChild(style);
     }
